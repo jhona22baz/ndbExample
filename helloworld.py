@@ -7,7 +7,8 @@ from google.appengine.ext import ndb
 
 
 class Greeting(ndb.Model):
-  """Models an individual Guestbook entry with content and date."""
+  """Models an individual Guestbook entry with content, date and something."""
+  something = ndb.StringProperty()
   content = ndb.StringProperty()
   date = ndb.DateTimeProperty(auto_now_add=True)
 
@@ -18,18 +19,20 @@ class Greeting(ndb.Model):
 
 class MainPage(webapp2.RequestHandler):
   def get(self):
-    self.response.out.write('<html><body>')
+    self.response.out.write('<html><body>')    
     guestbook_name = self.request.get('guestbook_name')
     ancestor_key = ndb.Key("Book", guestbook_name or "*notitle*")
     greetings = Greeting.query_book(ancestor_key).fetch(20)
 
     for greeting in greetings:
-      self.response.out.write('<blockquote>%s</blockquote>' %
-                              cgi.escape(greeting.content))
+      self.response.out.write('content -> %s,' % cgi.escape(greeting.content))
+      self.response.out.write(' something -> %s </br>'  % greeting.something)
+      
 
     self.response.out.write("""
           <form action="/sign?%s" method="post">
-            <div><textarea name="content" rows="3" cols="60"></textarea></div>
+            <div>content -> <textarea name="content" rows="3" cols="60"></textarea></div>
+            <div>something -><textarea name="something" rows="2" cols="20"></textarea></div>
             <div><input type="submit" value="Sign Guestbook"></div>
           </form>
           <hr>
@@ -45,7 +48,7 @@ class SubmitForm(webapp2.RequestHandler):
     # greetings are in the same entity group.
     guestbook_name = self.request.get('guestbook_name')
     greeting = Greeting(parent=ndb.Key("Book", guestbook_name or "*notitle*"),
-                        content = self.request.get('content'))
+                        content = self.request.get('content'),something = self.request.get('something'))
     greeting.put()
     self.redirect('/?' + urllib.urlencode({'guestbook_name': guestbook_name}))
 
