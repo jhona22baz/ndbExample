@@ -15,11 +15,17 @@ Para correr la aplicacion tengo sobre la misma rama la carpeta de google app eng
 
 
 ├── helloworld
+
 │   ├── app.yaml
+
 │   ├── helloworld.py
+
 │   ├── index.yaml
+
 │   └── README.md
+
 ├── google_appengine
+
 │   └── (subcarpetas {son muchas})
 
 con el siguiente comando en la terminal lo corro.
