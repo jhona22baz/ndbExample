@@ -5,11 +5,15 @@
   <h1>Contacts </h1>
 
     {% for contact in contacts %}
-      {% if contact.author %}
-        <b>{{ contact.author.nickname() }}</b> {{contact.addresses[0].label}} is in 
+      {% if contact.author %}        
+
+        <b> {{ contact.author.nickname() }} </b> 
+            {{contact.addresses[0].label}} is in 
+
       {% else %}
-       An anonymous person lives wrote:
+        An anonymous person lives wrote:
       {% endif %} 
+      
       {{contact.addresses[0].city}} city, {{contact.addresses[0].street}} street  
       and wrote:   
       <blockquote>{{ contact.content }}</blockquote>
@@ -19,6 +23,12 @@
     <p> llena el sig: formulario</p>
 
     <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
+
+
+      <label for="email" style="width: 3em">Email:</label>
+      <input name="email" placeholder="test@example.com" id="email" type="email">
+    
+
       <div>
         <label for="street_imput"> Street: </label>  
         <input type="text" id="street_input" name="street" placeholder = "Garza S."></type="text">

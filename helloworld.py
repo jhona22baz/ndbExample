@@ -34,7 +34,7 @@ class Address(ndb.Model):
 
 class Contact(ndb.Model): #M
     """Models an individual Guestbook entry with author, content, and date."""
-    author = ndb.UserProperty()
+    author = ndb.UserProperty(indexed=True)
     addresses = ndb.StructuredProperty(Address, repeated=True)
     content = ndb.StringProperty(indexed=False)
     date = ndb.DateTimeProperty(auto_now_add=True)
@@ -78,9 +78,11 @@ class Guestbook(webapp2.RequestHandler):
         guestbook_name = self.request.get('guestbook_name',DEFAULT_GUESTBOOK_NAME)
         contact = Contact(parent=guestbook_key(guestbook_name))#m M
 
-        if users.get_current_user():
-            contact.author = users.get_current_user() #m
-
+        #if users.get_current_user():
+        #    contact.author = users.get_current_user() #m
+        email = self.request.get('email')
+        user = users.User(email)
+        contact.author = user
         contact.content = self.request.get('content')#m                
         label_ = self.request.get('label')
         street_ = self.request.get('street')
