@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <body>
+  <h1>Contacts </h1>
+
+    {% for contact in contacts %}
+      {% if contact.author %}
+        <b>{{ contact.author.nickname() }}</b> {{contact.addresses[0].label}} is in 
+      {% else %}
+       An anonymous person lives wrote:
+      {% endif %} 
+      {{contact.addresses[0].city}} city, {{contact.addresses[0].street}} street  
+      and wrote:   
+      <blockquote>{{ contact.content }}</blockquote>
+    {% endfor %}
+
+    <section>
+    <p> llena el sig: formulario</p>
+
+    <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
+      <div>
+        <label for="street_imput"> Street: </label>  
+        <input type="text" id="street_input" name="street" placeholder = "Garza S."></type="text">
+      </div>
+
+      <div>
+        <label for="city_imput"> City: </label>  
+        <input type="text" id="city_input" name="city" placeholder = "Mty"></type="text">
+      </div>
+
+      <div>
+        <label for="label_imput"> type </label>  
+        <input type="text" id="label_input" name="label" placeholder = "Home"></type="text">
+      </div>
+
+      <div>
+        <label for="content">Coment:</label>
+        <textarea name="content" rows="3" cols="60"></textarea>
+      </div>
+      
+
+      <div><input type="submit" value="Sign Guestbook"></div>
+    </form>
+
+    <hr>
+
+    <form>Diary name:
+      <input value="{{ guestbook_name }}" name="guestbook_name">
+      <input type="submit" value="switch">
+    </form>
+
+    <a href="{{ url|safe }}">{{ url_linktext }}</a>
+    </section>
+  </body>
+</html>
+{% endautoescape %}
